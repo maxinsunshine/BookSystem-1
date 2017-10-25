@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="model.BookInfo" alias="book" />
+		<typeAlias type="model.BookTypeInfo" alias="bookType" />
+		
+		<typeAlias type="model.Books" alias="books" />
+		<typeAlias type="model.Users" alias="users" />
+		<typeAlias type="model.Orders" alias="orders" />
+		<typeAlias type="model.OrderItem" alias="orderItem" />
+	</typeAliases>
+	<mappers>
+		<mapper resource="mapper/BookInfoMapper.xml" />
+		<mapper resource="mapper/BookTypeInfoMapper.xml" />
+		
+		<mapper resource="mapper/BooksMapper.xml" />
+		<mapper resource="mapper/UsersMapper.xml" />
+		<mapper resource="mapper/OrdersMapper.xml" />
+		<mapper resource="mapper/OrderItemMapper.xml" />
+	</mappers>
+</configuration>

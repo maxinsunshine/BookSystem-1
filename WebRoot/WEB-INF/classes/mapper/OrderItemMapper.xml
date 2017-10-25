@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.OrderItemMapper" >
+  <resultMap id="BaseResultMap" type="model.OrderItem" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <id column="books_id" property="booksId" jdbcType="VARCHAR" />
+    <result column="lendnum" property="lendnum" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    order_id, books_id, lendnum
+  </sql>
+  
+  <!-- 根据订单号和商品号查询 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="model.OrderItem" >
+    select 
+    <include refid="Base_Column_List" />
+    from orderitem
+    where order_id = #{orderId,jdbcType=VARCHAR}
+      and books_id = #{booksId,jdbcType=VARCHAR}
+  </select>
+  <!-- 根据订单号和商品号删除 -->
+  <delete id="deleteByPrimaryKey" parameterType="model.OrderItem" >
+    delete from orderitem
+    where order_id = #{orderId,jdbcType=VARCHAR}
+      and books_id = #{booksId,jdbcType=VARCHAR}
+  </delete>
+  <!-- 新增-->
+  <insert id="insert" parameterType="model.OrderItem" >
+    insert into orderitem (order_id, books_id, lendnum
+      )
+    values (#{orderId,jdbcType=VARCHAR}, #{booksId,jdbcType=VARCHAR}, #{lendnum,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="model.OrderItem" >
+    insert into orderitem
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="booksId != null" >
+        books_id,
+      </if>
+      <if test="lendnum != null" >
+        lendnum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="booksId != null" >
+        #{booksId,jdbcType=VARCHAR},
+      </if>
+      <if test="lendnum != null" >
+        #{lendnum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="model.OrderItem" >
+    update orderitem
+    <set >
+      <if test="lendnum != null" >
+        lendnum = #{lendnum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=VARCHAR}
+      and books_id = #{booksId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="model.OrderItem" >
+    update orderitem
+    set lendnum = #{lendnum,jdbcType=INTEGER}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+      and books_id = #{booksId,jdbcType=VARCHAR}
+  </update>
+</mapper>

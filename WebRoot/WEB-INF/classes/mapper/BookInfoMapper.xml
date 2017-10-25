@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 声明对应的接口类 -->
+<mapper namespace="mapper.IBookInfoMapper">
+	<!-- 编写resultMap,使用表关联column对应数据库列名,property对应类的属性名 -->
+	<resultMap type="model.BookInfo" id="bookList">
+		<id column="id" property="id" />
+		<result column="bookName" property="bookName" />
+		<result column="price" property="price" />
+		<result column="author" property="author" />
+		<!-- 利用association体现多对一的关系,property对应BookInfo里面的关联的属性名 -->
+		<association property="bookTypeInfo" javaType="model.BookTypeInfo">
+			<id column="id" property="id" />
+			<result column="bookTypeName" property="bookTypeName" />
+		</association>
+	</resultMap>
+	<!-- 查询图书列表,resultMap声明返回类型 -->
+	<select id="getAllBook" resultMap="bookList">
+		select b.*,bti.booktypename from BookInfo b join bookTypeInfo bti on b.booktypeId=bti.id
+	</select>
+	<!--查询某本图书 -->
+	<resultMap type="model.BookInfo" id="bookInfo">
+		<id column="id" property="id"></id>
+		<result column="bookName" property="bookName" />
+		<result column="price" property="price" />
+		<result column="author" property="author" />
+		<!-- 利用association体现多对一的关系 -->
+		<association property="bookTypeInfo" javaType="model.BookTypeInfo">
+			<id column="bookTypeId" property="id"></id>
+		</association>
+	</resultMap>
+	<select id="getBook" resultMap="bookInfo">
+		select * from BookInfo where id =#{id}
+	</select>
+
+	<!--新增图书 -->
+	<insert id="addBook">
+		<!--使用selectKey代替触发器 -->
+		<selectKey>select seq_bookId.nextval from dual</selectKey>
+		<!--要接收的值用#{接收的属性名},列名有带关联的要从类对应的属性名开始 -->
+		insert into bookInfo values	(#{id},#{bookTypeInfo.id},#{bookName},#{author},#{price})
+	</insert>
+
+	<!--删除图书 -->
+	<delete id="delBook">
+		delete from BookInfo where id = #{id}
+	</delete>
+
+	<!--修改图书 -->
+	<update id="editBook">
+		update BookInfo set bookTypeid =#{bookTypeInfo.id},bookName=#{bookName},author=#{author},price=#{price} where id = #{id}
+	</update>
+</mapper>
